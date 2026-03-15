@@ -12,3 +12,11 @@ Orders can be one of the following statuses:
 
 
 {% enddocs %}
+
+{% docs additional_customer_info %}
+
+### **This table** has basic information about a customer, as well as some derived facts based on a customer's orders. We *love* our `customer` as well as we love the amount of `orders` even more.
+
+{% enddocs %}
+
+
