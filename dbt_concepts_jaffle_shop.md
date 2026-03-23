@@ -1548,14 +1548,14 @@ dbt docs generate
 dbt docs serve
 ```
 
-### One-line build with variable overrides (great for demos)
+### One-line build with variable overrides
 
 ```bash
 # Run the full build including a different date range and all statuses
 dbt build --vars '{"order_start_date": "2018-01-01", "include_all_statuses": true}'
 ```
 
-### Selective runs by concept (useful for YouTube demos)
+### Selective runs by concept
 
 ```bash
 # Demonstrate just the staging layer

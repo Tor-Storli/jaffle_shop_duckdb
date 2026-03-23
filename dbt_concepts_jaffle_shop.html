@@ -1462,13 +1462,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a><span class="ex">dbt</span> docs generate</span>
 <span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a><span class="ex">dbt</span> docs serve</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="one-line-build-with-variable-overrides-great-for-demos" class="level3">
-<h3 class="anchored" data-anchor-id="one-line-build-with-variable-overrides-great-for-demos">One-line build with variable overrides (great for demos)</h3>
+<section id="one-line-build-with-variable-overrides" class="level3">
+<h3 class="anchored" data-anchor-id="one-line-build-with-variable-overrides">One-line build with variable overrides</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the full build including a different date range and all statuses</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dbt</span> build <span class="at">--vars</span> <span class="st">'{"order_start_date": "2018-01-01", "include_all_statuses": true}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="selective-runs-by-concept-useful-for-youtube-demos" class="level3">
-<h3 class="anchored" data-anchor-id="selective-runs-by-concept-useful-for-youtube-demos">Selective runs by concept (useful for YouTube demos)</h3>
+<section id="selective-runs-by-concept" class="level3">
+<h3 class="anchored" data-anchor-id="selective-runs-by-concept">Selective runs by concept</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Demonstrate just the staging layer</span></span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dbt</span> build <span class="at">--select</span> models/staging/</span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
