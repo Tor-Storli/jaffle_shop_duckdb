@@ -1,0 +1,9 @@
+packages:
+  # dbt-utils: utility macros, SQL generators, and generic tests from dbt Labs
+  - package: dbt-labs/dbt_utils
+    version: 1.3.3
+
+  # dbt-expectations: Great Expectations-inspired advanced data quality tests
+  # Note: as of late 2024, maintained by Metaplane as a community fork
+  - package: metaplane/dbt_expectations
+    version: 0.10.10

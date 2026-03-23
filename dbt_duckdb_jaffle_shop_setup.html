@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dbt_duckdb_jaffle_shop_setup</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/clipboard/clipboard.min.js"></script>
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/popper.min.js"></script>
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/anchor.min.js"></script>
+<link href="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="dbt_duckdb_jaffle_shop_setup_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="dbt_duckdb_jaffle_shop_setup_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="dbt_duckdb_jaffle_shop_setup_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="dbt_duckdb_jaffle_shop_setup_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="setting-up-a-dbt-duckdb-project-in-vs-code-windows-11" class="level1">
+<h1>Setting Up a dbt + DuckDB Project in VS Code (Windows 11)</h1>
+<section id="using-the-jaffle-shop-duckdb-dataset-youtube-tutorial-setup-guide" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-jaffle-shop-duckdb-dataset-youtube-tutorial-setup-guide">Using the Jaffle Shop DuckDB Dataset — YouTube Tutorial Setup Guide</h3>
+<blockquote class="blockquote">
+<p>This guide walks you through every step to get a fully working dbt + DuckDB project running locally in VS Code on Windows 11, using the official <code>jaffle_shop_duckdb</code> demo dataset from dbt Labs.</p>
+</blockquote>
+<hr>
+</section>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#1-what-is-the-jaffle-shop">What is the Jaffle Shop?</a></li>
+<li><a href="#2-prerequisites">Prerequisites</a></li>
+<li><a href="#3-install-required-software">Install Required Software</a></li>
+<li><a href="#4-set-up-the-project--two-approaches">Set Up the Project — Two Approaches</a>
+<ul>
+<li><a href="#option-a-clone-the-official-jaffle-shop-duckdb-repo-recommended-for-beginners">Option A: Clone the Official Jaffle Shop DuckDB Repo</a></li>
+<li><a href="#option-b-build-from-scratch-with-dbt-init">Option B: Build from Scratch with dbt init</a></li>
+</ul></li>
+<li><a href="#5-install-vs-code-extensions">Install VS Code Extensions</a></li>
+<li><a href="#6-understand-the-project-structure">Understand the Project Structure</a></li>
+<li><a href="#7-run-the-full-pipeline">Run the Full Pipeline</a></li>
+<li><a href="#8-explore-your-data">Explore Your Data</a></li>
+<li><a href="#9-generate--view-documentation">Generate &amp; View Documentation</a></li>
+<li><a href="#10-common-errors--fixes">Common Errors &amp; Fixes</a></li>
+<li><a href="#11-what-to-show-on-your-youtube-tutorial">What to Show on Your YouTube Tutorial</a></li>
+</ol>
+<hr>
+</section>
+<section id="what-is-the-jaffle-shop" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-jaffle-shop">1. What is the Jaffle Shop?</h2>
+<p>The <strong>Jaffle Shop</strong> is a fictional café/sandwich shop created by dbt Labs as an official learning dataset. It is the standard demo project used in dbt tutorials worldwide. The dataset simulates a small e-commerce operation and includes:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Table</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>raw_customers</code></td>
+<td>Customer records (id, first name, last name)</td>
+</tr>
+<tr class="even">
+<td><code>raw_orders</code></td>
+<td>Order records (id, customer, date, status)</td>
+</tr>
+<tr class="odd">
+<td><code>raw_payments</code></td>
+<td>Payment records (order id, method, amount in cents)</td>
+</tr>
+</tbody>
+</table>
+<p>From this raw data, dbt builds a set of <strong>staging models</strong> (cleaned, renamed columns) and <strong>mart models</strong> (business-ready aggregations like <code>customers</code> and <code>orders</code>).</p>
+<p>The <code>jaffle_shop_duckdb</code> variant is specifically designed for <strong>local development</strong> — no cloud warehouse needed. All data lives in a single <code>.duckdb</code> file on your machine.</p>
+<blockquote class="blockquote">
+<p>A “jaffle” is a toasted sandwich with crimped sealed edges, invented in Australia in 1949. The name is just dbt’s way of keeping things fun.</p>
+</blockquote>
+<hr>
+</section>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">2. Prerequisites</h2>
+<p>Before starting, make sure you have the following installed and ready:</p>
+<section id="required" class="level3">
+<h3 class="anchored" data-anchor-id="required">Required</h3>
+<ul>
+<li><strong>Windows 11</strong> (this guide is written for Windows)</li>
+<li><strong>Python 3.9 or higher</strong> — dbt runs on Python</li>
+<li><strong>Git</strong> — to clone the repository</li>
+<li><strong>VS Code</strong> — your editor</li>
+</ul>
+</section>
+<section id="check-your-existing-installs" class="level3">
+<h3 class="anchored" data-anchor-id="check-your-existing-installs">Check your existing installs</h3>
+<p>Open a terminal in VS Code (<code>Ctrl + ``</code> ``) and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check Python version (must be 3.9+)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>python <span class="op">--</span>version</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check pip is available</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pip <span class="op">--</span>version</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check Git is installed</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>git <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If any of these fail, install them before continuing:</p>
+<ul>
+<li><strong>Python</strong>: https://www.python.org/downloads/ — ✅ Check “Add Python to PATH” during install</li>
+<li><strong>Git for Windows</strong>: https://git-scm.com/download/win</li>
+<li><strong>VS Code</strong>: https://code.visualstudio.com/</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="install-required-software" class="level2">
+<h2 class="anchored" data-anchor-id="install-required-software">3. Install Required Software</h2>
+<section id="step-3.1-create-a-project-folder" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.1-create-a-project-folder">Step 3.1 — Create a project folder</h3>
+<p>Open VS Code and open its integrated terminal (<code>Ctrl + ``</code> ``). Navigate to wherever you keep your projects and create a working directory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Navigate to your projects folder (adjust path as needed)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> C<span class="op">:</span>\Users\YourName\Documents\</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a folder for your dbt work</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mkdir dbt_projects</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> dbt_projects</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-3.2-create-a-python-virtual-environment" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.2-create-a-python-virtual-environment">Step 3.2 — Create a Python virtual environment</h3>
+<p>A virtual environment keeps your dbt installation isolated from other Python projects on your machine. This is best practice and avoids version conflicts.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the virtual environment (named "venv")</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m venv venv</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate the virtual environment (Windows Command Prompt)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>venv\Scripts\activate<span class="op">.</span><span class="fu">bat</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># OR if you're using PowerShell</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>venv\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p>⚠️ <strong>PowerShell execution policy note:</strong> If you get an error about scripts being disabled in PowerShell, run this first:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>ExecutionPolicy RemoteSigned <span class="op">-</span>Scope CurrentUser</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</blockquote>
+<p>Once activated, your terminal prompt will change to show <code>(venv)</code> at the start — this means you’re inside the virtual environment. <strong>All pip installs from this point go into the venv, not your system Python.</strong></p>
+</section>
+<section id="step-3.3-upgrade-pip" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.3-upgrade-pip">Step 3.3 — Upgrade pip</h3>
+<p>Always upgrade pip before installing packages to avoid resolver issues:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m pip install <span class="op">--</span>upgrade pip</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-3.4-install-dbt-core-and-the-duckdb-adapter" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.4-install-dbt-core-and-the-duckdb-adapter">Step 3.4 — Install dbt-core and the DuckDB adapter</h3>
+<p>Since dbt Core 1.8, the core package and adapters must be installed separately:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pip install dbt-core dbt-duckdb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This installs:</p>
+<ul>
+<li><code>dbt-core</code> — the main dbt engine and CLI</li>
+<li><code>dbt-duckdb</code> — the adapter that lets dbt talk to DuckDB</li>
+</ul>
+</section>
+<section id="step-3.5-verify-the-installation" class="level3">
+<h3 class="anchored" data-anchor-id="step-3.5-verify-the-installation">Step 3.5 — Verify the installation</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dbt <span class="op">--</span>version</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see output similar to:</p>
+<pre><code>Core:
+  - installed: 1.8.x
+  - latest:    1.8.x - Up to date!
+
+Plugins:
+  - duckdb: 1.8.x - Up to date!</code></pre>
+<hr>
+</section>
+</section>
+<section id="set-up-the-project-two-approaches" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-the-project-two-approaches">4. Set Up the Project — Two Approaches</h2>
+<p>Choose <strong>Option A</strong> if you want to jump straight into a working project (recommended for a YouTube tutorial demo). Choose <strong>Option B</strong> if you want to show viewers how to build a project from scratch.</p>
+<hr>
+<section id="option-a-clone-the-official-jaffle-shop-duckdb-repo-recommended-for-beginners" class="level3">
+<h3 class="anchored" data-anchor-id="option-a-clone-the-official-jaffle-shop-duckdb-repo-recommended-for-beginners">Option A: Clone the Official Jaffle Shop DuckDB Repo <em>(Recommended for beginners)</em></h3>
+<p>This clones the ready-made project from dbt Labs, which already includes all models, seeds, tests, and a <code>profiles.yml</code> configured for DuckDB.</p>
+<section id="step-a.1-clone-the-repository" class="level4">
+<h4 class="anchored" data-anchor-id="step-a.1-clone-the-repository">Step A.1 — Clone the repository</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>git clone https<span class="op">://</span>github<span class="op">.</span><span class="fu">com</span><span class="op">/</span>dbt-labs<span class="op">/</span>jaffle_shop_duckdb<span class="op">.</span><span class="fu">git</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> jaffle_shop_duckdb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-a.2-install-project-dependencies-from-requirements.txt" class="level4">
+<h4 class="anchored" data-anchor-id="step-a.2-install-project-dependencies-from-requirements.txt">Step A.2 — Install project dependencies from requirements.txt</h4>
+<p>The repo includes a <code>requirements.txt</code> that pins the exact compatible versions of dbt and duckdb:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pip install <span class="op">-</span>r requirements<span class="op">.</span><span class="fu">txt</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-a.3-open-the-folder-in-vs-code" class="level4">
+<h4 class="anchored" data-anchor-id="step-a.3-open-the-folder-in-vs-code">Step A.3 — Open the folder in VS Code</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>code <span class="op">.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This opens the project in VS Code. You’re ready to run dbt commands — skip ahead to <a href="#7-run-the-full-pipeline">Section 7: Run the Full Pipeline</a>.</p>
+<hr>
+</section>
+</section>
+<section id="option-b-build-from-scratch-with-dbt-init" class="level3">
+<h3 class="anchored" data-anchor-id="option-b-build-from-scratch-with-dbt-init">Option B: Build from Scratch with <code>dbt init</code></h3>
+<p>This approach shows how to create a brand new dbt project and wire it up to DuckDB manually. Great for teaching viewers the setup process from zero.</p>
+<section id="step-b.1-initialise-a-new-dbt-project" class="level4">
+<h4 class="anchored" data-anchor-id="step-b.1-initialise-a-new-dbt-project">Step B.1 — Initialise a new dbt project</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dbt init jaffle_shop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>dbt will ask you a series of questions:</p>
+<ol type="1">
+<li><strong>Which database adapter?</strong> — type the number for <code>duckdb</code></li>
+<li>That’s it for DuckDB — unlike cloud databases, there’s no host, port, or credentials needed</li>
+</ol>
+<p>This creates a new folder called <code>jaffle_shop/</code> with the standard dbt project scaffold.</p>
+</section>
+<section id="step-b.2-navigate-into-the-project" class="level4">
+<h4 class="anchored" data-anchor-id="step-b.2-navigate-into-the-project">Step B.2 — Navigate into the project</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> jaffle_shop</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-b.3-configure-profiles.yml" class="level4">
+<h4 class="anchored" data-anchor-id="step-b.3-configure-profiles.yml">Step B.3 — Configure <code>profiles.yml</code></h4>
+<p>By default, dbt looks for <code>profiles.yml</code> in <code>~/.dbt/</code> (i.e.&nbsp;<code>C:\Users\YourName\.dbt\profiles.yml</code>). Open that file and confirm it looks like this — or create it if it doesn’t exist:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jaffle_shop</span><span class="kw">:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">target</span><span class="kw">:</span><span class="at"> dev</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">outputs</span><span class="kw">:</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">dev</span><span class="kw">:</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">type</span><span class="kw">:</span><span class="at"> duckdb</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">path</span><span class="kw">:</span><span class="at"> </span><span class="st">"jaffle_shop.duckdb"</span><span class="co"> # DuckDB file created in your project root</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">threads</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">schema</span><span class="kw">:</span><span class="at"> main</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p><strong>What <code>path</code> means:</strong> This is where DuckDB will create (or look for) the <code>.duckdb</code> database file. The path is relative to your <code>profiles.yml</code> location. If the file doesn’t exist yet, DuckDB will create it automatically on first run.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Threads:</strong> Setting <code>threads: 4</code> is generally optimal for DuckDB. DuckDB parallelises internally, so more threads don’t always mean faster results.</p>
+</blockquote>
+<p>Alternatively, you can place <code>profiles.yml</code> directly in your project root folder (alongside <code>dbt_project.yml</code>). This is useful for self-contained demo projects and means the connection config travels with your project.</p>
+</section>
+<section id="step-b.4-add-jaffle-shop-seed-data-csv-files" class="level4">
+<h4 class="anchored" data-anchor-id="step-b.4-add-jaffle-shop-seed-data-csv-files">Step B.4 — Add Jaffle Shop seed data (CSV files)</h4>
+<p>Create a <code>seeds/</code> folder in your project and add the three raw CSV files. You can download them from the official repo:</p>
+<ul>
+<li><code>seeds/raw_customers.csv</code></li>
+<li><code>seeds/raw_orders.csv</code></li>
+<li><code>seeds/raw_payments.csv</code></li>
+</ul>
+<p>The CSVs are available at:</p>
+<pre><code>https://github.com/dbt-labs/jaffle_shop_duckdb/tree/duckdb/seeds</code></pre>
+</section>
+<section id="step-b.5-verify-the-connection" class="level4">
+<h4 class="anchored" data-anchor-id="step-b.5-verify-the-connection">Step B.5 — Verify the connection</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dbt debug</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>All checks should pass with green <code>OK</code> messages. If you see an error about the profile name, make sure the profile name in <code>profiles.yml</code> exactly matches the <code>profile:</code> field in <code>dbt_project.yml</code>.</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="install-vs-code-extensions" class="level2">
+<h2 class="anchored" data-anchor-id="install-vs-code-extensions">5. Install VS Code Extensions</h2>
+<p>These extensions dramatically improve the dbt development experience in VS Code:</p>
+<section id="dbt-power-user-most-important" class="level3">
+<h3 class="anchored" data-anchor-id="dbt-power-user-most-important">dbt Power User <em>(Most important)</em></h3>
+<ul>
+<li><strong>Extension ID:</strong> <code>innoverio.vscode-dbt-power-user</code></li>
+<li>Install from the Extensions panel (<code>Ctrl+Shift+X</code>), search “dbt Power User”</li>
+<li><strong>What it gives you:</strong>
+<ul>
+<li>Run <code>dbt run</code> / <code>dbt test</code> on the currently open file with a single click or keyboard shortcut</li>
+<li>Inline lineage graph showing upstream/downstream models</li>
+<li>Column-level preview of model output without leaving VS Code</li>
+<li>Auto-completion for <code>{ ref('...') }</code> and <code>{ source('...', '...') }</code> calls</li>
+<li>Syntax highlighting for Jinja + SQL in <code>.sql</code> files</li>
+</ul></li>
+</ul>
+</section>
+<section id="yaml-by-red-hat" class="level3">
+<h3 class="anchored" data-anchor-id="yaml-by-red-hat">YAML <em>(by Red Hat)</em></h3>
+<ul>
+<li><strong>Extension ID:</strong> <code>redhat.vscode-yaml</code></li>
+<li>Provides schema validation and auto-complete for <code>.yml</code> files, including dbt schema files</li>
+</ul>
+</section>
+<section id="sqltools-sqltools-duckdb-driver-optional-but-useful" class="level3">
+<h3 class="anchored" data-anchor-id="sqltools-sqltools-duckdb-driver-optional-but-useful">SQLTools + SQLTools DuckDB Driver <em>(Optional but useful)</em></h3>
+<ul>
+<li><strong>Extension ID:</strong> <code>mtxr.sqltools</code> + <code>evidence-dev.sqltools-duckdb-driver</code></li>
+<li>Lets you connect to your <code>.duckdb</code> file and run queries directly inside VS Code</li>
+<li>Great for browsing tables after <code>dbt run</code> without needing a separate DuckDB client</li>
+</ul>
+</section>
+<section id="gitlens-optional" class="level3">
+<h3 class="anchored" data-anchor-id="gitlens-optional">GitLens <em>(Optional)</em></h3>
+<ul>
+<li><strong>Extension ID:</strong> <code>eamodio.gitlens</code></li>
+<li>Enhances Git tracking inside VS Code — useful if you’re demonstrating version control of dbt projects</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="understand-the-project-structure" class="level2">
+<h2 class="anchored" data-anchor-id="understand-the-project-structure">6. Understand the Project Structure</h2>
+<p>After cloning or initialising, your project should look like this:</p>
+<pre><code>jaffle_shop_duckdb/
+│
+├── dbt_project.yml          # Main project config — name, profile, model paths, materializations
+├── profiles.yml             # Database connection (DuckDB path, schema, threads)
+├── packages.yml             # External dbt packages to install (optional)
+├── requirements.txt         # Python dependencies (dbt-core, dbt-duckdb, etc.)
+├── jaffle_shop.duckdb       # The DuckDB database file (created after first dbt run)
+│
+├── seeds/                   # CSV files loaded as raw tables into DuckDB
+│   ├── raw_customers.csv
+│   ├── raw_orders.csv
+│   └── raw_payments.csv
+│
+├── models/
+│   ├── staging/             # Staging layer — light cleaning of raw data
+│   │   ├── schema.yml       # Column descriptions + tests for staging models
+│   │   ├── stg_customers.sql
+│   │   ├── stg_orders.sql
+│   │   └── stg_payments.sql
+│   │
+│   └── marts/               # Mart layer — business-ready aggregated tables
+│       ├── schema.yml       # Column descriptions + tests for mart models
+│       ├── customers.sql    # One row per customer with lifetime order stats
+│       └── orders.sql       # One row per order with payment info joined in
+│
+├── tests/                   # Optional standalone SQL tests
+├── macros/                  # Optional reusable Jinja macros
+├── snapshots/               # Optional SCD2 snapshot definitions
+│
+└── target/                  # Auto-generated — compiled SQL, docs, artifacts
+    ├── compiled/            # Rendered SQL (Jinja resolved) — read-only reference
+    ├── run/                 # SQL that was actually executed
+    └── manifest.json        # Full project graph (used by docs and other tools)</code></pre>
+<section id="key-files-explained" class="level3">
+<h3 class="anchored" data-anchor-id="key-files-explained">Key files explained</h3>
+<p><strong><code>dbt_project.yml</code></strong> — The heart of the project. Defines the project name, which profile to use, where models live, and default materializations per folder:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">"jaffle_shop"</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">"1.0.0"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">profile</span><span class="kw">:</span><span class="at"> </span><span class="st">"jaffle_shop"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model-paths</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"models"</span><span class="kw">]</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">seed-paths</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"seeds"</span><span class="kw">]</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">test-paths</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"tests"</span><span class="kw">]</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">models</span><span class="kw">:</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">jaffle_shop</span><span class="kw">:</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">staging</span><span class="kw">:</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">+materialized</span><span class="kw">:</span><span class="at"> view</span><span class="co"> # Staging models are views (fast, no storage cost)</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">marts</span><span class="kw">:</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">+materialized</span><span class="kw">:</span><span class="at"> table</span><span class="co"> # Mart models are tables (pre-computed for performance)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong><code>profiles.yml</code></strong> — Connection config. For DuckDB this is minimal — just a file path:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jaffle_shop</span><span class="kw">:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">target</span><span class="kw">:</span><span class="at"> dev</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">outputs</span><span class="kw">:</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">dev</span><span class="kw">:</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">type</span><span class="kw">:</span><span class="at"> duckdb</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">path</span><span class="kw">:</span><span class="at"> </span><span class="st">"jaffle_shop.duckdb"</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">threads</span><span class="kw">:</span><span class="at"> </span><span class="dv">4</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">schema</span><span class="kw">:</span><span class="at"> main</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong><code>schema.yml</code> files</strong> — Define documentation and tests for your models:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">models</span><span class="kw">:</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> stg_customers</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Staged customer data — cleaned from raw_customers seed"</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">columns</span><span class="kw">:</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> customer_id</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Primary key for customers"</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">tests</span><span class="kw">:</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> unique</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> not_null</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="run-the-full-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="run-the-full-pipeline">7. Run the Full Pipeline</h2>
+<p>Now for the fun part. Make sure your virtual environment is active (<code>(venv)</code> shows in the terminal prompt) and you are inside the project directory.</p>
+<section id="step-7.1-install-any-dbt-packages" class="level3">
+<h3 class="anchored" data-anchor-id="step-7.1-install-any-dbt-packages">Step 7.1 — Install any dbt packages</h3>
+<p>If the project has a <code>packages.yml</code>, install them first:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dbt deps</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="step-7.2-verify-the-connection" class="level3">
+<h3 class="anchored" data-anchor-id="step-7.2-verify-the-connection">Step 7.2 — Verify the connection</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dbt debug</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>All checks must be green before proceeding. Common issues:</p>
+<ul>
+<li>Wrong profile name — check it matches in both <code>profiles.yml</code> and <code>dbt_project.yml</code></li>
+<li>Python virtual environment not activated — the <code>dbt</code> command won’t be found</li>
+</ul>
+</section>
+<section id="step-7.3-load-the-seed-data" class="level3">
+<h3 class="anchored" data-anchor-id="step-7.3-load-the-seed-data">Step 7.3 — Load the seed data</h3>
+<p>This reads the CSV files from <code>seeds/</code> and creates raw tables in DuckDB:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dbt seed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Expected output:</strong></p>
+<pre><code>1 of 3 START seed file main.raw_customers ........... [RUN]
+1 of 3 OK loaded seed file main.raw_customers ....... [INSERT 100 in 0.10s]
+2 of 3 START seed file main.raw_orders .............. [RUN]
+2 of 3 OK loaded seed file main.raw_orders .......... [INSERT 99 in 0.05s]
+3 of 3 START seed file main.raw_payments ............ [RUN]
+3 of 3 OK loaded seed file main.raw_payments ........ [INSERT 113 in 0.05s]</code></pre>
+</section>
+<section id="step-7.4-run-the-models" class="level3">
+<h3 class="anchored" data-anchor-id="step-7.4-run-the-models">Step 7.4 — Run the models</h3>
+<p>This builds all SQL models in dependency order — staging first, then marts:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dbt run</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Expected output:</strong></p>
+<pre><code>1 of 5 START sql view model main.stg_customers ...... [RUN]
+1 of 5 OK created sql view model main.stg_customers . [OK in 0.08s]
+2 of 5 START sql view model main.stg_orders ......... [RUN]
+2 of 5 OK created sql view model main.stg_orders .... [OK in 0.06s]
+3 of 5 START sql view model main.stg_payments ....... [RUN]
+3 of 5 OK created sql view model main.stg_payments .. [OK in 0.05s]
+4 of 5 START sql table model main.customers ......... [RUN]
+4 of 5 OK created sql table model main.customers .... [OK in 0.15s]
+5 of 5 START sql table model main.orders ............ [RUN]
+5 of 5 OK created sql table model main.orders ....... [OK in 0.12s]</code></pre>
+</section>
+<section id="step-7.5-run-the-tests" class="level3">
+<h3 class="anchored" data-anchor-id="step-7.5-run-the-tests">Step 7.5 — Run the tests</h3>
+<p>This validates data quality across all models:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dbt test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Expected output:</strong></p>
+<pre><code>20 of 20 PASS ...
+Completed successfully
+Done. PASS=20 WARN=0 ERROR=0 SKIP=0 TOTAL=20</code></pre>
+</section>
+<section id="step-7.6-run-everything-at-once-with-dbt-build" class="level3">
+<h3 class="anchored" data-anchor-id="step-7.6-run-everything-at-once-with-dbt-build">Step 7.6 — Run everything at once with dbt build</h3>
+<p>For production-style runs, <code>dbt build</code> combines seed + run + test in one command, stopping if any test fails:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dbt build</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is the command you’ll use most in real projects — it’s safer because tests act as gates between models.</p>
+<hr>
+</section>
+</section>
+<section id="explore-your-data" class="level2">
+<h2 class="anchored" data-anchor-id="explore-your-data">8. Explore Your Data</h2>
+<section id="using-dbt-show-quick-terminal-preview" class="level3">
+<h3 class="anchored" data-anchor-id="using-dbt-show-quick-terminal-preview">Using dbt show (quick terminal preview)</h3>
+<p>Preview rows from any model directly in the terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See the first 5 rows of the customers mart</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>dbt show <span class="op">--</span>select customers</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># See 10 rows of raw orders</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>dbt show <span class="op">--</span>select raw_orders <span class="op">--</span>limit <span class="dv">10</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview a staging model</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>dbt show <span class="op">--</span>select stg_payments</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="using-sqltools-in-vs-code-full-sql-browser" class="level3">
+<h3 class="anchored" data-anchor-id="using-sqltools-in-vs-code-full-sql-browser">Using SQLTools in VS Code (full SQL browser)</h3>
+<p>If you installed the SQLTools + DuckDB driver extensions:</p>
+<ol type="1">
+<li>Open the SQLTools panel (database icon in the left sidebar)</li>
+<li>Add a new connection → choose DuckDB</li>
+<li>Set the database path to your <code>jaffle_shop.duckdb</code> file</li>
+<li>Browse tables and run queries directly in VS Code</li>
+</ol>
+</section>
+<section id="using-the-duckdb-cli-optional" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-duckdb-cli-optional">Using the DuckDB CLI (optional)</h3>
+<p>You can also query the <code>.duckdb</code> file directly from the terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install DuckDB CLI (if not already available)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>pip install duckdb</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Open the database</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>duckdb jaffle_shop<span class="op">.</span><span class="fu">duckdb</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Then run SQL:</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> customers LIMIT <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>SHOW TABLES<span class="op">;</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">quit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="generate-view-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="generate-view-documentation">9. Generate &amp; View Documentation</h2>
+<p>One of dbt’s most impressive features for a YouTube demo — a fully auto-generated documentation website with an interactive lineage graph.</p>
+<section id="step-9.1-generate-the-docs" class="level3">
+<h3 class="anchored" data-anchor-id="step-9.1-generate-the-docs">Step 9.1 — Generate the docs</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dbt docs generate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This reads your project files and creates <code>target/manifest.json</code> and <code>target/catalog.json</code> — the data that powers the docs site.</p>
+</section>
+<section id="step-9.2-serve-the-docs-locally" class="level3">
+<h3 class="anchored" data-anchor-id="step-9.2-serve-the-docs-locally">Step 9.2 — Serve the docs locally</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>dbt docs serve</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This starts a local web server and automatically opens <code>http://localhost:8080</code> in your browser.</p>
+<blockquote class="blockquote">
+<p>If port 8080 is already in use: <code>dbt docs serve --port 8001</code></p>
+</blockquote>
+</section>
+<section id="what-to-explore-in-the-docs-ui" class="level3">
+<h3 class="anchored" data-anchor-id="what-to-explore-in-the-docs-ui">What to explore in the docs UI</h3>
+<ul>
+<li><strong>Project overview</strong> — all models, seeds, tests listed in the left sidebar</li>
+<li><strong>Model detail page</strong> — click any model to see its description, columns, tests, and the SQL that was compiled</li>
+<li><strong>Lineage graph</strong> — click the graph icon (bottom right of any model page) to see the interactive DAG. You can:
+<ul>
+<li>See the full dependency chain from raw seeds → staging → marts</li>
+<li>Click nodes to navigate to that model</li>
+<li>Filter the graph to show only upstream or downstream nodes</li>
+</ul></li>
+</ul>
+<p>The lineage graph for Jaffle Shop looks like this:</p>
+<pre><code>raw_customers ──┐
+raw_orders ─────┤──► stg_customers ──┐
+raw_payments ───┘   stg_orders ──────┤──► customers
+                    stg_payments ────┘──► orders</code></pre>
+<hr>
+</section>
+</section>
+<section id="common-errors-fixes" class="level2">
+<h2 class="anchored" data-anchor-id="common-errors-fixes">10. Common Errors &amp; Fixes</h2>
+<section id="dbt-command-not-found-dbt-is-not-recognized" class="level3">
+<h3 class="anchored" data-anchor-id="dbt-command-not-found-dbt-is-not-recognized"><code>dbt: command not found</code> / <code>dbt is not recognized</code></h3>
+<p><strong>Cause:</strong> The virtual environment is not activated, so the <code>dbt</code> binary isn’t on your PATH.</p>
+<p><strong>Fix:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate the virtual environment first</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>venv\Scripts\activate<span class="op">.</span><span class="fu">bat</span>      <span class="co"># Command Prompt</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>venv\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span>      <span class="co"># PowerShell</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="could-not-find-profile-named-jaffle_shop" class="level3">
+<h3 class="anchored" data-anchor-id="could-not-find-profile-named-jaffle_shop"><code>Could not find profile named 'jaffle_shop'</code></h3>
+<p><strong>Cause:</strong> The profile name in <code>dbt_project.yml</code> doesn’t match the top-level key in <code>profiles.yml</code>.</p>
+<p><strong>Fix:</strong> Open both files and make sure they match exactly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dbt_project.yml</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">profile</span><span class="kw">:</span><span class="at"> </span><span class="st">'jaffle_shop'</span><span class="co">   # ← must match ↓</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># profiles.yml</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">jaffle_shop</span><span class="kw">:</span><span class="co">             # ← must match ↑</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">target</span><span class="kw">:</span><span class="at"> dev</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="at">  ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="io-error-could-not-set-lock-on-file-jaffle_shop.duckdb" class="level3">
+<h3 class="anchored" data-anchor-id="io-error-could-not-set-lock-on-file-jaffle_shop.duckdb"><code>IO Error: Could not set lock on file "jaffle_shop.duckdb"</code></h3>
+<p><strong>Cause:</strong> Another process has the DuckDB file open and is holding a write lock. DuckDB only allows one writer at a time.</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>If you have DBeaver open, close it completely (not just disconnect — fully shut down the app)</li>
+<li>If VS Code’s SQLTools is connected, disconnect it before running dbt commands</li>
+<li>Check for any other terminal sessions that might have a DuckDB connection open</li>
+<li>As a last resort (you’ll lose your data): delete the <code>.duckdb</code> file and re-run <code>dbt build</code></li>
+</ul>
+<hr>
+</section>
+<section id="powershell-running-scripts-is-disabled-on-this-system" class="level3">
+<h3 class="anchored" data-anchor-id="powershell-running-scripts-is-disabled-on-this-system"><code>PowerShell: running scripts is disabled on this system</code></h3>
+<p><strong>Cause:</strong> Windows PowerShell’s default execution policy blocks running <code>.ps1</code> scripts.</p>
+<p><strong>Fix:</strong> Run this once in PowerShell as your user:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> <span class="op">-</span>ExecutionPolicy RemoteSigned <span class="op">-</span>Scope CurrentUser</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then try activating the venv again.</p>
+<hr>
+</section>
+<section id="tests-fail-with-not_null-or-unique-errors" class="level3">
+<h3 class="anchored" data-anchor-id="tests-fail-with-not_null-or-unique-errors">Tests fail with <code>not_null</code> or <code>unique</code> errors</h3>
+<p><strong>Cause:</strong> The seed data or a model transformation has introduced unexpected nulls or duplicate values.</p>
+<p><strong>Fix:</strong> Use <code>dbt show</code> to inspect the data and <code>dbt compile --select my_model</code> to review the compiled SQL and find where the issue was introduced.</p>
+<hr>
+</section>
+<section id="modulenotfounderror-when-running-dbt" class="level3">
+<h3 class="anchored" data-anchor-id="modulenotfounderror-when-running-dbt"><code>ModuleNotFoundError</code> when running dbt</h3>
+<p><strong>Cause:</strong> dbt or one of its dependencies isn’t installed in the active environment.</p>
+<p><strong>Fix:</strong> Make sure your venv is activated and reinstall:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>venv\Scripts\activate<span class="op">.</span><span class="fu">bat</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>pip install dbt-core dbt-duckdb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="what-to-show-on-your-youtube-tutorial" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-show-on-your-youtube-tutorial">11. What to Show on Your YouTube Tutorial</h2>
+<p>Here’s a suggested filming flow for a clear, engaging tutorial:</p>
+<section id="opening-sequence-show-this-first" class="level3">
+<h3 class="anchored" data-anchor-id="opening-sequence-show-this-first">Opening sequence (show this first)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dbt <span class="op">--</span>version           <span class="co"># Prove the tools are installed</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>dbt debug               <span class="co"># Show a clean "All checks passed!" screen</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-core-demo-loop" class="level3">
+<h3 class="anchored" data-anchor-id="the-core-demo-loop">The core demo loop</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dbt seed                <span class="co"># "This loads our raw CSV data into DuckDB"</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>dbt run                 <span class="co"># "This builds our transformation models"</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>dbt test                <span class="co"># "This validates the data quality"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-wow-moments-great-for-screen-recording" class="level3">
+<h3 class="anchored" data-anchor-id="the-wow-moments-great-for-screen-recording">The wow moments (great for screen recording)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show compiled SQL — reveal the magic behind ref()</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>dbt compile <span class="op">--</span>select customers</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Open target/compiled/.../customers.sql in VS Code to show the rendered SQL</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick data preview without leaving the terminal</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>dbt show <span class="op">--</span>select customers</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>dbt show <span class="op">--</span>select orders <span class="op">--</span>limit <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-documentation-reveal" class="level3">
+<h3 class="anchored" data-anchor-id="the-documentation-reveal">The documentation reveal</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>dbt docs generate</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>dbt docs serve</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># → Switch to browser, show the lineage graph, click through models</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-one-command-to-rule-them-all" class="level3">
+<h3 class="anchored" data-anchor-id="the-one-command-to-rule-them-all">The “one command to rule them all”</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dbt build               <span class="co"># Show that this runs everything with testing built in</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="useful-selector-examples-to-demonstrate" class="level3">
+<h3 class="anchored" data-anchor-id="useful-selector-examples-to-demonstrate">Useful selector examples to demonstrate</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>dbt <span class="fu">ls</span>                                    <span class="co"># List all project resources</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>dbt <span class="fu">ls</span> <span class="op">--</span>select <span class="op">+</span>customers                <span class="co"># Show upstream dependencies</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>dbt run <span class="op">--</span>select staging<span class="op">.*</span>               <span class="co"># Run only staging models</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>dbt test <span class="op">--</span>select customers              <span class="co"># Test just one model</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>dbt run <span class="op">--</span>select customers <span class="op">--</span>full-refresh <span class="co"># Force rebuild a table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+<p><em>Setup guide for dbt-duckdb on Windows 11 — dbt Core 1.8+ / dbt-duckdb 1.8+</em> <em>Jaffle Shop DuckDB repo: https://github.com/dbt-labs/jaffle_shop_duckdb</em> <em>Official dbt DuckDB quickstart: https://docs.getdbt.com/guides/duckdb</em></p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
